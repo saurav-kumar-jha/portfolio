@@ -130,9 +130,8 @@ const Home = () => {
     return () => clearTimeout(timeout);
   }, [handleTyping]);
 
-  // Lottie configuration
   const lottieOptions = {
-    src: "https://lottie.host/58753882-bb6a-49f5-a2c0-950eda1e135a/NLbpVqGegK.lottie",
+    src: "https://lottie.host/1c592080-ee14-4b49-9674-5a9ba3cbfbba/cxxbHIbE41.lottie",
     loop: true,
     autoplay: true,
     rendererSettings: {
