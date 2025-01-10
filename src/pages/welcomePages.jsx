@@ -58,7 +58,7 @@ export const WelcomePage = ({ onLoadingComplete }) => {
             setTimeout(() => {
                 onLoadingComplete?.();
             }, 1000);
-        }, 10000);
+        }, 4000);
 
         return () => clearTimeout(timer);
     }, [onLoadingComplete]);

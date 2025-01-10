@@ -5,15 +5,14 @@ import Komentar from "../component/Commentar";
 import Swal from "sweetalert2";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { db } from "../Firebase/firebaseconfig"
 import { collection, addDoc } from "firebase/firestore"
+import {db} from "../Firebase/firebaseconfig"
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "", });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, seterror] = useState("")
 
-  const dbref = collection(db, "Message")
 
   useEffect(() => {
     AOS.init({
@@ -43,6 +42,7 @@ const ContactPage = () => {
     });
 
     try {
+      const dbref = collection(db, "Message")
       const added = await addDoc(dbref, {
         Name: formData.name,
         Email: formData.email,
