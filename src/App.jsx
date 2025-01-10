@@ -39,7 +39,7 @@ const LandingPage = ({ showwelcome, setshowwelcome }) => {
 }
 
 function App() {
-  const [showwelcome, setshowwelcome] = useState(true)
+  const [showwelcome, setshowwelcome] = useState(false)
 
   return (
     <>

@@ -5,10 +5,15 @@ import Komentar from "../component/Commentar";
 import Swal from "sweetalert2";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { db } from "../Firebase/firebaseconfig"
+import { collection, addDoc } from "firebase/firestore"
 
 const ContactPage = () => {
-  const [formData, setFormData] = useState({name: "",email: "",message: "",});
+  const [formData, setFormData] = useState({ name: "", email: "", message: "", });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, seterror] = useState("")
+
+  const dbref = collection(db, "Message")
 
   useEffect(() => {
     AOS.init({
@@ -38,35 +43,40 @@ const ContactPage = () => {
     });
 
     try {
-      const form = e.target;
-      const formData = new FormData(form);
-
-      await form.submit();
-
-      Swal.fire({
-        title: 'Success!',
-        text: 'Your message has been sent successfully!',
-        icon: 'success',
-        confirmButtonColor: '#6366f1',
-        timer: 2000,
-        timerProgressBar: true
-      });
-
-      setFormData({
-        name: "",
-        email: "",
-        message: "",
-      });
-    } catch (error) {
+      const added = await addDoc(dbref, {
+        Name: formData.name,
+        Email: formData.email,
+        Msg: formData.message
+      })
+      if(added){
+        Swal.fire({
+          title: 'Success!',
+          text: 'Your message has been sent successfully!',
+          icon: 'success',
+          confirmButtonColor: '#6366f1',
+          timer: 2000,
+          timerProgressBar: true
+        });
+  
+        setFormData({
+          name: "",
+          email: "",
+          message: "",
+        });
+      }
+    } catch (e) {
+      seterror(e.message)
       Swal.fire({
         title: 'Error!',
         text: 'Something went wrong. Please try again later.',
         icon: 'error',
         confirmButtonColor: '#6366f1'
       });
-    } finally {
-      setIsSubmitting(false);
+    }finally{
+      setIsSubmitting(false)
     }
+
+
   };
 
   return (
@@ -100,7 +110,7 @@ const ContactPage = () => {
             </div>
 
             <form action="#" method="POST" onSubmit={handleSubmit} className="space-y-6" >
-           
+
               <input type="hidden" name="_template" value="table" />
               <input type="hidden" name="_captcha" value="false" />
 
@@ -112,7 +122,7 @@ const ContactPage = () => {
               <div data-aos="fade-up" data-aos-delay="200" className="relative group" >
                 <Mail className="absolute left-4 top-4 w-5 h-5 text-gray-400 group-focus-within:text-[#6366f1] transition-colors" />
                 <input type="email" name="email" placeholder="Your Email" value={formData.email} onChange={handleChange} disabled={isSubmitting} className="w-full p-4 pl-12 bg-white/10 rounded-xl border border-white/20 placeholder-gray-500 text-white focus:outline-none focus:ring-2 focus:ring-[#6366f1]/30 transition-all duration-300 hover:border-[#6366f1]/30 disabled:opacity-50"
-                  required/>
+                  required />
               </div>
               <div data-aos="fade-up" data-aos-delay="300" className="relative group" >
                 <MessageSquare className="absolute left-4 top-4 w-5 h-5 text-gray-400 group-focus-within:text-[#6366f1] transition-colors" />
